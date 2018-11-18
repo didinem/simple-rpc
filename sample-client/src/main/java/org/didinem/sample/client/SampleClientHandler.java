@@ -52,4 +52,10 @@ public class SampleClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         RpcResponse rpcResponse = (RpcResponse) object;
         System.out.println(rpcResponse);
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
 }

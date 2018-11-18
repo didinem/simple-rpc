@@ -23,4 +23,8 @@ public class ThreadPoolService {
         threadPool.submit(serviceTask);
     }
 
+    public void submitTask(Runnable task) {
+        threadPool.submit(task);
+    }
+
 }
