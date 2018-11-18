@@ -4,10 +4,12 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.CharsetUtil;
 import org.didinem.sample.RpcInvocation;
+import org.didinem.sample.RpcResponse;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
@@ -36,7 +38,19 @@ public class SampleClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-        System.out.println("Client received: " + msg.toString(CharsetUtil.UTF_8));
+        // 接受请求消息
+        ByteBuf byteBuf = msg;
+        byte[] msgByte = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(msgByte);
+
+        // 反序列化
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(msgByte);
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        Object object = objectInputStream.readObject();
+        objectInputStream.close();
+        byteArrayInputStream.close();
+        RpcResponse rpcResponse = (RpcResponse) object;
+        System.out.println(rpcResponse);
     }
 
     @Override

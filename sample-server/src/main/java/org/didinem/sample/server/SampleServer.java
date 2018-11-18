@@ -16,7 +16,7 @@ public class SampleServer {
 
     public void bind(int port) throws Exception {
         final ThreadPoolService threadPoolService = new ThreadPoolService();
-        final SampleServerInboundHandler2 sampleServerInboundHandler2 = new SampleServerInboundHandler2(threadPoolService);
+        final SampleServerInboundHandler sampleServerInboundHandler = new SampleServerInboundHandler(threadPoolService);
         EventLoopGroup group = new NioEventLoopGroup();
 
         try {
@@ -28,7 +28,7 @@ public class SampleServer {
                         @Override
                         public void initChannel(SocketChannel ch)
                                 throws Exception {
-                            ch.pipeline().addLast(sampleServerInboundHandler2);
+                            ch.pipeline().addLast(sampleServerInboundHandler);
                         }
                     });
 
