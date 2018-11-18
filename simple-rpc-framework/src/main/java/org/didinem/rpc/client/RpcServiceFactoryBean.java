@@ -1,5 +1,7 @@
 package org.didinem.rpc.client;
 
+import io.netty.channel.Channel;
+import org.didinem.rpc.RpcRequest;
 import org.didinem.rpc.ServiceProvider;
 import org.didinem.rpc.registry.ServiceRegistry;
 import org.springframework.beans.factory.FactoryBean;
@@ -18,7 +20,7 @@ public class RpcServiceFactoryBean implements FactoryBean {
 
     private String registryPort;
 
-    private Class interfaceClass;
+    private String interfaceClassName;
 
     public String getRegistryIp() {
         return registryIp;
@@ -36,16 +38,16 @@ public class RpcServiceFactoryBean implements FactoryBean {
         this.registryPort = registryPort;
     }
 
-    public Class getInterfaceClass() {
-        return interfaceClass;
+    public String getInterfaceClassName() {
+        return interfaceClassName;
     }
 
-    public void setInterfaceClass(Class interfaceClass) {
-        this.interfaceClass = interfaceClass;
+    public void setInterfaceClassName(String interfaceClassName) {
+        this.interfaceClassName = interfaceClassName;
     }
 
     public Object getObject() throws Exception {
-        List<ServiceProvider> serviceProviders = ServiceRegistry.subscribe(interfaceClass);
+        List<ServiceProvider> serviceProviders = ServiceRegistry.subscribe(interfaceClassName);
         if (null == serviceProviders) {
             return null;
         }
@@ -56,24 +58,32 @@ public class RpcServiceFactoryBean implements FactoryBean {
         if (serviceProvider == null) {
             return null;
         }
+        final RpcClient rpcClient = new RpcClient(serviceProvider.getIp(), Integer.valueOf(serviceProvider.getPort()));
 
 
         InvocationHandler rpcHandler = new InvocationHandler() {
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
+                Channel channel = rpcClient.getChannel();
+                RpcRequest rpcRequest = new RpcRequest(interfaceClassName, method.getName(), args);
+                channel.writeAndFlush(rpcRequest);
                 return "bb";
             }
         };
-
+        Class interfaceClass = Class.forName(interfaceClassName);
         return Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{interfaceClass}, rpcHandler);
     }
 
     public Class<?> getObjectType() {
+        Class interfaceClass = Object.class;
+        try {
+            interfaceClass = Class.forName(interfaceClassName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return interfaceClass;
     }
 
     public boolean isSingleton() {
         return true;
     }
-
 }

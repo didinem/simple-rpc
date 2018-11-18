@@ -1,0 +1,19 @@
+package org.didinem.sample;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
+
+/**
+ * Created by didinem on 11/11/2018.
+ */
+@Getter
+@Setter
+@ToString
+public class RpcResponse implements Serializable {
+
+    private Object response;
+
+}

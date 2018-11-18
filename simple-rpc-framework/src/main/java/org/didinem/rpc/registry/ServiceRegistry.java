@@ -1,5 +1,6 @@
 package org.didinem.rpc.registry;
 
+
 import com.google.common.collect.Lists;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.collections4.CollectionUtils;
@@ -30,22 +31,23 @@ public class ServiceRegistry {
 
     public static void register(ServiceProvider serviceProvider) {
         // FIXME 生成nodeName的方式
-        String interfaceNode = serviceProvider.getInterfaceClass().getName();
         String serviceNode = serviceProvider.getIp() + ":" + serviceProvider.getPort();
-        String nodePath = PROVIDER_PATH + SEPARATOR + interfaceNode + SEPARATOR + serviceNode;
-        zkClient.createPersistent(nodePath, true);
+        zkClient.createPersistent(PROVIDER_PATH + SEPARATOR + serviceProvider.getInterfaceClass(), true);
+        String nodePath = PROVIDER_PATH + SEPARATOR + serviceProvider.getInterfaceClass() + SEPARATOR + serviceNode;
+//        zkClient.createPersistent(nodePath, true);
+        zkClient.createEphemeral(nodePath);
     }
 
-    public static List<ServiceProvider> subscribe(Class interfaceClass) {
+    public static List<ServiceProvider> subscribe(String interfaceClassName) {
         List<ServiceProvider> serviceProviders = null;
-        String interfaceNode = PROVIDER_PATH + SEPARATOR + interfaceClass.getName();
+        String interfaceNode = PROVIDER_PATH + SEPARATOR + interfaceClassName;
         if (zkClient.exists(interfaceNode)) {
             List<String> providers = zkClient.getChildren(interfaceNode);
             if (CollectionUtils.isNotEmpty(providers)) {
                 serviceProviders = Lists.newArrayListWithCapacity(providers.size());
                 for (String string : providers) {
                     String[] rpcProperty = string.split(":");
-                    ServiceProvider serviceProvider = ServiceProviderBuilder.build(rpcProperty[0], rpcProperty[1], interfaceClass);
+                    ServiceProvider serviceProvider = ServiceProviderBuilder.build(rpcProperty[0], rpcProperty[1], interfaceClassName);
                     serviceProviders.add(serviceProvider);
                 }
             }

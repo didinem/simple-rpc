@@ -9,7 +9,7 @@ public class ServiceProvider {
 
     private String port;
 
-    private Class interfaceClass;
+    private String interfaceClass;
 
     public String getIp() {
         return ip;
@@ -27,11 +27,11 @@ public class ServiceProvider {
         this.port = port;
     }
 
-    public Class getInterfaceClass() {
+    public String getInterfaceClass() {
         return interfaceClass;
     }
 
-    public void setInterfaceClass(Class interfaceClass) {
+    public void setInterfaceClass(String interfaceClass) {
         this.interfaceClass = interfaceClass;
     }
 }

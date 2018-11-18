@@ -5,7 +5,7 @@ package org.didinem.rpc;
  */
 public class ServiceProviderBuilder {
 
-    public static ServiceProvider build(String ip, String port, Class interfaceName) {
+    public static ServiceProvider build(String ip, String port, String interfaceName) {
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setIp(ip);
         serviceProvider.setPort(port);

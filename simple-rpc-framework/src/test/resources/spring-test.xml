@@ -17,6 +17,6 @@
     <bean id="testService" class="org.didinem.rpc.client.RpcServiceFactoryBean">
         <property name="registryIp" value="127.0.0.1"/>
         <property name="registryPort" value="2181"/>
-        <property name="interfaceClass" value="org.didinem.service.TestService"/>
+        <property name="interfaceClassName" value="org.didinem.service.TestService"/>
     </bean>
 </beans>

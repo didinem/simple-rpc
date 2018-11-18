@@ -125,7 +125,8 @@ public class RpcServer implements InitializingBean, ApplicationContextAware {
         List<ServiceProvider> serviceProviders = Lists.newArrayListWithCapacity(rpcServices.size());
         for (Object object : rpcServices) {
             String addr = InetAddress.getLocalHost().getHostAddress();
-            ServiceProvider serviceProvider = ServiceProviderBuilder.build(addr, servicePort, object.getClass());
+            RpcService rpcService = object.getClass().getAnnotation(RpcService.class);
+            ServiceProvider serviceProvider = ServiceProviderBuilder.build(addr, servicePort, rpcService.value());
             serviceProviders.add(serviceProvider);
         }
         registerProviders(serviceProviders);
