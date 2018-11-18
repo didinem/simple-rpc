@@ -3,4 +3,4 @@
 sample-client/target/*
 sample-common/target/*
 sample-server/target/*
-simple-rpc-framework/*
+simple-rpc-framework/target/*

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="testService" class="org.didinem.rpc.client.RpcServiceFactoryBean">
+        <property name="registryIp" value="127.0.0.1"/>
+        <property name="registryPort" value="2181"/>
+        <property name="interfaceClassName" value="org.didinem.service.TestService"/>
+    </bean>
+
+    <bean id="clientService" class="org.didinem.client.ClientService"/>
+
+</beans>
