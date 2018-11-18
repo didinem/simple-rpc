@@ -5,9 +5,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 import org.didinem.sample.RpcInvocation;
-import org.didinem.sample.RpcResponse;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 
 /**
  * Created by didinem on 5/20/2017.
@@ -36,29 +36,7 @@ public class SampleServerInboundHandler extends ChannelInboundHandlerAdapter {
         RpcInvocation rpcInvocation = (RpcInvocation) object;
         System.out.println(rpcInvocation);
 
-        final ChannelHandlerContext ctxRef = ctx;
-        Runnable task = new Runnable() {
-            @Override
-            public void run() {
-                // 发送返回消息
-                RpcResponse rpcResponse = new RpcResponse();
-                rpcResponse.setResponse("aaa");
-
-                byte[] objectByte = null;
-                try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                     ObjectOutputStream objectOutputStream= new ObjectOutputStream(byteArrayOutputStream)) {
-                    objectOutputStream.writeObject(rpcResponse);
-                    objectByte = byteArrayOutputStream.toByteArray();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                ctxRef.writeAndFlush(objectByte);
-            }
-        };
-        Thread thread = new Thread(task);
-        thread.start();
-
-//        threadPoolService.submitTask(new ServiceTask(ctx, rpcInvocation));
+        threadPoolService.submitTask(new ServiceTask(ctx, rpcInvocation));
         ReferenceCountUtil.release(byteBuf);
     }
 
