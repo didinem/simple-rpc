@@ -2,32 +2,74 @@ package org.didinem.sample.server;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.CharsetUtil;
+import org.didinem.sample.RpcInvocation;
+import org.didinem.sample.RpcResponse;
+import org.didinem.sample.service.TestServiceImpl;
 
-import java.util.concurrent.TimeUnit;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by didinem on 11/18/2018.
  */
 public class SimpleTask implements Runnable {
 
+    private static Map<String, Object> map = new HashMap<>();
+
+    static {
+        map.put("org.didinem.sample.service.TestService", new TestServiceImpl());
+    }
+
     private ChannelHandlerContext ctx;
 
-    public SimpleTask(ChannelHandlerContext ctx) {
+    private RpcInvocation rpcInvocation;
+
+    public SimpleTask(ChannelHandlerContext ctx, RpcInvocation rpcInvocation) {
         this.ctx = ctx;
+        this.rpcInvocation = rpcInvocation;
     }
 
     @Override
     public void run() {
-        int i = 10;
-        while (i-- > 0) {
-            ctx.writeAndFlush(Unpooled.copiedBuffer("another thread response", CharsetUtil.UTF_8));
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        // 执行方法调用
+        Object service = map.get(rpcInvocation.getInterfaceQualifiedName());
+        Class clazz = service.getClass();
+
+        Method serviceMethod = null;
+        try {
+            serviceMethod = clazz.getMethod(rpcInvocation.getMethodName(), rpcInvocation.getParametersTypes());
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
         }
+
+        Object returnValue = null;
+        try {
+            returnValue = serviceMethod.invoke(service, rpcInvocation.getParameters());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+
+        // 发送返回消息
+        RpcResponse rpcResponse = new RpcResponse();
+        rpcResponse.setResponse(returnValue);
+
+        byte[] objectByte = null;
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             ObjectOutputStream objectOutputStream= new ObjectOutputStream(byteArrayOutputStream)) {
+            objectOutputStream.writeObject(rpcResponse);
+            objectByte = byteArrayOutputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ctx.writeAndFlush(Unpooled.copiedBuffer(objectByte));
     }
 
 }

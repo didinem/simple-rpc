@@ -16,13 +16,13 @@
 package org.didinem.sample.server;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.CharsetUtil;
+import org.didinem.sample.RpcInvocation;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 
-@Sharable
 public class SampleServerInboundHandler2 extends ChannelInboundHandlerAdapter {
 
     private ThreadPoolService threadPoolService;
@@ -33,10 +33,21 @@ public class SampleServerInboundHandler2 extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf in = (ByteBuf) msg;
-        System.out.println("Server received: " + in.toString(CharsetUtil.UTF_8));
+        // 接受请求消息
+        ByteBuf byteBuf = (ByteBuf) msg;
+        byte[] msgByte = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(msgByte);
 
-        threadPoolService.submitTask(new SimpleTask(ctx));
+        // 反序列化
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(msgByte);
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        Object object = objectInputStream.readObject();
+        objectInputStream.close();
+        byteArrayInputStream.close();
+        RpcInvocation rpcInvocation = (RpcInvocation) object;
+        System.out.println(rpcInvocation);
+
+        threadPoolService.submitTask(new SimpleTask(ctx, rpcInvocation));
     }
 
     @Override
