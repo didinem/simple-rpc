@@ -1,4 +1,4 @@
-package org.didinem.sample.server;
+package org.didinem.sample.server.test;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

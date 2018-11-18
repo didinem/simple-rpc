@@ -1,4 +1,4 @@
-package org.didinem.sample.server;
+package org.didinem.sample.server.test;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;

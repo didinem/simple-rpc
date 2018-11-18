@@ -1,4 +1,4 @@
-package org.didinem.sample.server;
+package org.didinem.sample.server.test;
 
 import org.didinem.sample.RpcInvocation;
 import org.didinem.sample.service.TestService;

@@ -1,4 +1,4 @@
-package org.didinem.sample.client;
+package org.didinem.sample.client.test;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

@@ -1,6 +1,7 @@
-package org.didinem.sample.server;
+package org.didinem.sample.server.test;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
@@ -34,6 +35,8 @@ public class SampleServer {
 
             // 绑定端口，同步等待成功
             ChannelFuture f = b.bind().sync();
+
+            Channel channel = f.channel();
 
             // 等待服务端监听端口关闭
             f.channel().closeFuture().sync();

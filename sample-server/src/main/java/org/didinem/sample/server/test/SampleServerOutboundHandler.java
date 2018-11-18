@@ -1,4 +1,4 @@
-package org.didinem.sample.server;
+package org.didinem.sample.server.test;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
