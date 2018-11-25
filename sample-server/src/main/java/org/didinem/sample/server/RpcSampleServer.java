@@ -30,7 +30,7 @@ public class RpcSampleServer {
 
     public void bind() throws Exception {
         final ThreadPoolService threadPoolService = new ThreadPoolService();
-        final SampleServerInboundHandler sampleServerInboundHandler = new SampleServerInboundHandler(threadPoolService);
+        final RpcServerInboundHandler rpcServerInboundHandler = new RpcServerInboundHandler(threadPoolService);
         group = new NioEventLoopGroup();
 
         ServerBootstrap b = new ServerBootstrap();
@@ -41,7 +41,7 @@ public class RpcSampleServer {
                     @Override
                     public void initChannel(SocketChannel ch)
                             throws Exception {
-                        ch.pipeline().addLast(sampleServerInboundHandler);
+                        ch.pipeline().addLast(rpcServerInboundHandler);
                     }
                 });
 

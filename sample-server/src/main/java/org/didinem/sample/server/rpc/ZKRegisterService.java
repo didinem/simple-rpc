@@ -7,7 +7,6 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
-import org.didinem.sample.RpcInvocation;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -53,12 +52,12 @@ public class ZKRegisterService {
     }
 
     public static void main(String[] args) {
-        ZKRegisterService zkRegisterService = new ZKRegisterService();
-        ProviderInfo providerInfo = new ProviderInfo();
-        providerInfo.setProviderInterfaceClass(RpcInvocation.class);
-        providerInfo.setHostAddress("127.0.0.1");
-        providerInfo.setPort(20880);
-        zkRegisterService.register(providerInfo);
+//        ZKRegisterService zkRegisterService = new ZKRegisterService();
+//        ProviderInfo providerInfo = new ProviderInfo();
+//        providerInfo.setProviderInterfaceClass(RpcInvocation.class);
+//        providerInfo.setHostAddress("127.0.0.1");
+//        providerInfo.setPort(20880);
+//        zkRegisterService.register(providerInfo);
     }
 
 }

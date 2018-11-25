@@ -46,7 +46,7 @@ public class SampleClient {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        int port = 8080;
+        int port = 20880;
         new SampleClient().connect(port, "127.0.0.1");
     }
 
