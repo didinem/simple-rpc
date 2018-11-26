@@ -64,6 +64,7 @@ public class ServiceTask implements Runnable {
         // 发送返回消息
         RpcResponse rpcResponse = new RpcResponse();
         rpcResponse.setResponse(returnValue);
+        rpcResponse.setRpcID(rpcInvocation.getRpcID());
 
         byte[] objectByte = null;
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

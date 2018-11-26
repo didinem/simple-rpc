@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Created by didinem on 11/10/2018.
@@ -13,6 +14,8 @@ import java.io.Serializable;
 @Getter
 @ToString
 public class RpcInvocation implements Serializable {
+
+    private String rpcID = UUID.randomUUID().toString();
 
     private String interfaceQualifiedName;
 

@@ -14,6 +14,8 @@ import java.io.Serializable;
 @ToString
 public class RpcResponse implements Serializable {
 
+    private String rpcID;
+
     private Object response;
 
 }
