@@ -1,6 +1,7 @@
 package org.didinem.sample.server.test;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
@@ -12,6 +13,7 @@ import java.io.ObjectInputStream;
 /**
  * Created by didinem on 5/20/2017.
  */
+@ChannelHandler.Sharable
 public class SampleServerInboundHandler extends ChannelInboundHandlerAdapter {
 
     private ThreadPoolService threadPoolService;
@@ -22,7 +24,6 @@ public class SampleServerInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println(ctx.channel());
         // 接受请求消息
         ByteBuf byteBuf = (ByteBuf) msg;
         byte[] msgByte = new byte[byteBuf.readableBytes()];
@@ -39,13 +40,6 @@ public class SampleServerInboundHandler extends ChannelInboundHandlerAdapter {
 
         threadPoolService.submitTask(new ServiceTask(ctx, rpcInvocation));
         ReferenceCountUtil.release(byteBuf);
-    }
-
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel inactive:" + ctx.channel());
-//        ctx.close();
-        super.channelInactive(ctx);
     }
 
     @Override

@@ -40,7 +40,6 @@ public class SampleClient {
         // 发起异步连接操作
         ChannelFuture f = b.connect(host, port).sync();
         this.channel = f.channel();
-        System.out.println("创建channel：" + this.channel);
     }
 
     public ResponseFuture sendRequest(RpcInvocation rpcInvocation) {
@@ -92,7 +91,6 @@ public class SampleClient {
             ResponseFuture responseFuture = sampleClient.sendRequest(rpcInvocation);
             Object object = responseFuture.get();
             System.out.println(object);
-            System.out.println(sampleClient.channel);
         } finally {
             sampleClient.channel.close().sync();
             sampleClient.group.shutdownGracefully().sync();

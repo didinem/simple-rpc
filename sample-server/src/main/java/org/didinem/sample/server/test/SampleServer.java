@@ -37,7 +37,6 @@ public class SampleServer {
             ChannelFuture f = b.bind().sync();
 
             Channel channel = f.channel();
-            System.out.println(channel);
 
             // 等待服务端监听端口关闭
             f.channel().closeFuture().sync();
