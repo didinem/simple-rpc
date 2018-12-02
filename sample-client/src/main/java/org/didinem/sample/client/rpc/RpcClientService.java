@@ -7,25 +7,23 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.didinem.sample.rpc.RpcInvocation;
+import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.concurrent.ExecutionException;
 
-
-/**
- * Created by didinem on 11/10/2018.
- */
-public class SampleClient {
-
-    private Channel channel;
+@Service
+public class RpcClientService {
 
     private EventLoopGroup group;
 
-    public void connect(int port, String host) throws Exception {
+    private Channel channel;
+
+    public void initClient(String hostAddress, int port) {
         // 配置客户端NIO线程组
-        this.group = new NioEventLoopGroup();
+        group = new NioEventLoopGroup();
         Bootstrap b = new Bootstrap();
         b.group(group).channel(NioSocketChannel.class)
                 .option(ChannelOption.TCP_NODELAY, true)
@@ -38,7 +36,12 @@ public class SampleClient {
                 });
 
         // 发起异步连接操作
-        ChannelFuture f = b.connect(host, port).sync();
+        ChannelFuture f = null;
+        try {
+            f = b.connect(hostAddress, port).sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.channel = f.channel();
     }
 
@@ -72,30 +75,5 @@ public class SampleClient {
         return responseFuture;
     }
 
-    /**
-     * @param args
-     * @throws Exception
-     */
-    public static void main(String[] args) throws Exception {
-        int port = 8080;
-        SampleClient sampleClient = new SampleClient();
-        sampleClient.connect(port, "127.0.0.1");
-
-        try {
-            RpcInvocation rpcInvocation = new RpcInvocation();
-            rpcInvocation.setInterfaceQualifiedName("org.didinem.sample.service.TestService");
-            rpcInvocation.setMethodName("test");
-            rpcInvocation.setParametersTypes(new Class[]{String.class});
-            rpcInvocation.setParameters(new Object[]{"abc"});
-
-            ResponseFuture responseFuture = sampleClient.sendRequest(rpcInvocation);
-            Object object = responseFuture.get();
-            System.out.println(object);
-        } finally {
-            sampleClient.channel.close().sync();
-            sampleClient.group.shutdownGracefully().sync();
-        }
-
-    }
 
 }

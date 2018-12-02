@@ -1,10 +1,11 @@
 package org.didinem.sample.server;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
-import org.didinem.sample.RpcInvocation;
+import org.didinem.sample.rpc.RpcInvocation;
 import org.didinem.sample.server.test.ServiceTask;
 import org.didinem.sample.server.test.ThreadPoolService;
 
@@ -14,6 +15,7 @@ import java.io.ObjectInputStream;
 /**
  * Created by didinem on 5/20/2017.
  */
+@ChannelHandler.Sharable
 public class RpcServerInboundHandler extends ChannelInboundHandlerAdapter {
 
     private ThreadPoolService threadPoolService;
