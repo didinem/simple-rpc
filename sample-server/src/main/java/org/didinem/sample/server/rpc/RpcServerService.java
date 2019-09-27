@@ -1,6 +1,7 @@
 package org.didinem.sample.server.rpc;
 
 import com.google.common.collect.Maps;
+import org.didinem.sample.rpc.ProviderInfo;
 import org.didinem.sample.server.RpcSampleServer;
 import org.springframework.stereotype.Service;
 

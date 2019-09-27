@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
-import org.didinem.sample.RpcInvocation;
+import org.didinem.sample.rpc.RpcInvocation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;

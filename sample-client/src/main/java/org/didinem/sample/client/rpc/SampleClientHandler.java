@@ -3,7 +3,7 @@ package org.didinem.sample.client.rpc;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import org.didinem.sample.RpcResponse;
+import org.didinem.sample.rpc.RpcResponse;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;

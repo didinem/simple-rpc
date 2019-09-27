@@ -1,9 +1,9 @@
 package org.didinem.sample;
 
-import org.didinem.sample.server.rpc.ProviderInfo;
+import org.didinem.sample.rpc.ProviderInfo;
+import org.didinem.sample.rpc.ZKRegisterService;
 import org.didinem.sample.server.rpc.ProviderRegisterService;
 import org.didinem.sample.server.rpc.RpcServerService;
-import org.didinem.sample.server.rpc.ZKRegisterService;
 import org.didinem.sample.service.TestService;
 
 import java.util.concurrent.TimeUnit;
@@ -15,6 +15,13 @@ public class RpcApplication {
 
     public static void main(String[] args) {
         testRegiste();
+        testServer();
+
+        try {
+            TimeUnit.DAYS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void testServer() {
@@ -31,12 +38,6 @@ public class RpcApplication {
 
         ProviderInfo providerInfo = new ProviderInfo(TestService.class, "127.0.0.1", 20880);
         providerRegisterService.registe(providerInfo);
-
-        try {
-            TimeUnit.SECONDS.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 }

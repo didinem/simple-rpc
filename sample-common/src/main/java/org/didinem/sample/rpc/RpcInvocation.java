@@ -1,4 +1,4 @@
-package org.didinem.sample;
+package org.didinem.sample.rpc;
 
 import lombok.Getter;
 import lombok.Setter;

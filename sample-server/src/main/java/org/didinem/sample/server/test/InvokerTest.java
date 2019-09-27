@@ -1,6 +1,6 @@
 package org.didinem.sample.server.test;
 
-import org.didinem.sample.RpcInvocation;
+import org.didinem.sample.rpc.RpcInvocation;
 import org.didinem.sample.service.TestService;
 import org.didinem.sample.service.TestServiceImpl;
 

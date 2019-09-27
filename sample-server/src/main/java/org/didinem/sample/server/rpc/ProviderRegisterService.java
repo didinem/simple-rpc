@@ -1,6 +1,8 @@
 package org.didinem.sample.server.rpc;
 
 import lombok.Setter;
+import org.didinem.sample.rpc.ProviderInfo;
+import org.didinem.sample.rpc.ZKRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

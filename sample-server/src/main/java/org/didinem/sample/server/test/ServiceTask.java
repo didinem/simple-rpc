@@ -4,8 +4,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Getter;
 import lombok.Setter;
-import org.didinem.sample.RpcInvocation;
-import org.didinem.sample.RpcResponse;
+import org.didinem.sample.rpc.RpcInvocation;
+import org.didinem.sample.rpc.RpcResponse;
 import org.didinem.sample.service.TestServiceImpl;
 
 import java.io.ByteArrayOutputStream;

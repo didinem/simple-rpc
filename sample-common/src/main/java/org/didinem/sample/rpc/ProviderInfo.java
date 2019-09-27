@@ -1,4 +1,4 @@
-package org.didinem.sample.server.rpc;
+package org.didinem.sample.rpc;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
